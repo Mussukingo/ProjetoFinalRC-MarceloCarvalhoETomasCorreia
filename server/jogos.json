@@ -1,0 +1,7 @@
+[
+  { "id": 570, "name": "Dota 2", "genre": "MOBA" },
+  { "id": 730, "name": "Counter-Strike 2", "genre": "FPS" },
+  { "id": 578080, "name": "PUBG: BATTLEGROUNDS", "genre": "Battle Royale" },
+  { "id": 271590, "name": "Grand Theft Auto V", "genre": "Action" },
+  { "id": 1174180, "name": "Red Dead Redemption 2", "genre": "Adventure" }
+]

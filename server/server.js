@@ -1,23 +1,35 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const PORT = 3000;
+const jogosPath = path.join(__dirname, "jogos.json");
 
-
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-  })
-);
-
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
+function page(title, body) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>${title}</title>
+</head>
+<body>
+<h1>${title}</h1>
+${body}
+</body>
+</html>`;
+}
 
 app.get("/", (req, res) => {
   res.send(
+    page(
       "PhanSite Server",
       "<p>Server is running.</p>"
+    )
   );
 });
 
@@ -33,3 +45,5 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+
+module.exports = { app, jogos, save };
