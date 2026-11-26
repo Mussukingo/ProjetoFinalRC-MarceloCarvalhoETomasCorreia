@@ -1,50 +1,37 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const PORT = 3000;
+const jogosPath = path.join(__dirname, "jogos.json");
 
-
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-  })
-);
-
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
-function page(title, body) {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>${title}</title>
-</head>
-<body>
-<h1>${title}</h1>
-${body}
-</body>
-</html>`;
+let jogos = [];
+
+try {
+  jogos = JSON.parse(fs.readFileSync(jogosPath, "utf8"));
+} catch (error) {
+  console.error("Não foi possível ler jogos.json:", error.message);
 }
 
-app.get("/", (req, res) => {
-  res.send(
-    page(
-      "PhanSite Server",
-      "<p>Server is running.</p>"
-    )
-  );
+function save() {
+  fs.writeFileSync(jogosPath, JSON.stringify(jogos, null, 2), "utf8");
+}
+
+app.get("/api/jogos", (req, res) => {
+  res.json(jogos);
 });
 
-app.use((req, res) => {
-  res.status(404).send(
-    page(
-      "404",
-      `<p>No route found for <code>${req.url}</code>.</p>`
-    )
-  );
+app.get("/", (req, res) => {
+  res.send("Servidor a funcionar.");
 });
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+
+module.exports = { app, jogos, save };
